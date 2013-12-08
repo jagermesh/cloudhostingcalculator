@@ -1,98 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640" />
+    <meta charset="utf-8">
+    <title>Cloud Hosting Calculator</title>
+    <meta name="description" content="Cloud Hosting Calculator. Amazon EC2, DigitalOcean, RackSpace, etc...">
+    <meta name="author" content="jagermesh">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="bright/3rdparty/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bright/3rdparty/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="/bright/3rdparty/font-awesome/css/font-awesome-ie7.min.css">
+    <![endif]-->
+    <link href="bright/css/bright.css" rel="stylesheet">
+    <script src="bright/3rdparty/jquery/jquery-1.7.1.min.js"></script>
+    <script src="bright/3rdparty/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="bright/3rdparty/mustache/mustache.min.js"></script>
+    <script src="bright/js/bright.min.js"></script>
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+    <link href="3rdparty/tablesorter/theme.bootstrap-custom.css" rel="stylesheet">
+    <script src="3rdparty/tablesorter/jquery.tablesorter.min.js"></script>
+    <script src="3rdparty/tablesorter/jquery.tablesorter.widgets.js"></script>
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>Cloud Hosting Calculator by jagermesh</title>
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/app.js"></script>
   </head>
 
-  <body>
-    <a id="forkme_banner" href="https://github.com/jagermesh/cloudhostingcalculator">View on GitHub</a>
-    <div class="shell">
+  <body style="overflow:hidden;">
 
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Cloud Hosting Calculator</h1>
-            <h2>Cloud Hosting Calculator</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
+    <script id="filterBadge" type="text/template">
+      <span class="label label-warning action-clear-filter" data-field-name="{{fieldName}}" data-value="{{value}}">{{value}} <i class="icon-remove"></i></span>
+    </script>
 
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/jagermesh/cloudhostingcalculator/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/jagermesh/cloudhostingcalculator/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
+    <script id="instanceRow" type="text/template">
+      <tr class="data-row no-print" data-rowd="{{code}}">
+        <td class="optimal-width no-print"><a class="btn btn-default btn-xs action-plus"><i class="icon-plus"></i></a></td>
+        <td class="optimal-width"><input type="int" class="form-control data-field" name="amount" maxlength="4"/></td>
+        <td class="optimal-width no-print"><a class="btn btn-default btn-xs action-minus"><i class="icon-minus"></i></a></td>
+        <td class="optimal-width">{{#providerLogo}}<img src="{{providerLogo}}" width="16" /> {{/providerLogo}}<a class="action-filter" data-field-name="provider" data-value="{{provider}}">{{provider}}</a></td>
+        <td>{{code}}</td>
+        <td class="optimal-width right-aligned no-print">{{#description}}<a class="not-a tooltip-element" data-content="{{description}}">&nbsp;<i class="icon-info"></i>&nbsp;</a>{{/description}}</td>
+        <td><a class="action-filter" data-field-name="location" data-value="{{location}}">{{location}}</a></td>
+        <td class="optimal-width"><a class="action-filter" data-field-name="os" data-value="{{os}}">{{os}}</a></td>
+        <td class="optimal-width right-aligned">${{pricePerHour}}</td>
+        <td class="optimal-width right-aligned">${{pricePerDay}}</td>
+        <td class="optimal-width right-aligned">${{pricePerMonth}}</td>
+        <td class="optimal-width right-aligned">{{cores}}</td>
+        <td class="optimal-width right-aligned">{{ram}}</td>
+        <td class="optimal-width right-aligned">{{hdd}}</td>
+        <td class="optimal-width right-aligned no-print">{{hddDesc}}</td>
+        <td class="optimal-width right-aligned no-print"><a class="action-filter" data-field-name="storageType" data-value="{{storageType}}">{{storageType}}</a></td>
+        <td class="optimal-width right-aligned no-print"><a class="action-filter" data-field-name="network" data-value="{{network}}">{{network}}</a></td>
+        <td class="optimal-width right-aligned no-print"><a class="action-filter" data-field-name="traffic" data-value="{{traffic}}">{{traffic}}</a></td>
+      </tr>
+    </script>
 
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse1 no-print" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{/}">Cloud Hosting Calculator</a>
+      </div>
 
-      <span class="banner-fix"></span>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="nav-item ajax-in-progress invisible"><img width="24" border="0" src="bright/images/progress-small-light.gif" /></li>
+          <li class="nav-item"><a target="_blank" href="http://aws.amazon.com/">Amazon Web Services</a></li>
+          <li class="nav-item"><a target="_blank" href="https://www.digitalocean.com/?refcode=b35024f25717">Digital Ocean</a></li>
+          <li class="nav-item"><a target="_blank" href="http://www.rackspace.com/cloud/">Rackspace Cloud</a></li>
+          <li class="nav-item"><a target="_blank" href="https://cloud.google.com/products/compute-engine/">Google Compute Engine</a></li>
+          <li class="nav-item"><a target="_blank" href="http://www.windowsazure.com/en-us/">Windows Azure</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-item"><a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a></li>
+        </ul>
+      </div>
+    </nav>
 
+    <div class="container container-box">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="badges-container">
+            <div class="box-badge box-badge-default action-change-tasks-scope" data-value="active">
+              <div class="box-badge-header">Instances</div>
+              <div class="box-badge-body" id="amountOfInstances">0</div>
+            </div>
+            <div class="box-badge box-badge-default action-change-tasks-scope" data-value="active">
+              <div class="box-badge-header">Price per hour</div>
+              <div class="box-badge-body" id="costPerHour">$0</div>
+            </div>
+            <div class="box-badge box-badge-warning action-change-tasks-scope" data-value="active">
+              <div class="box-badge-header">Price per day</div>
+              <div class="box-badge-body" id="costPerDay">$0</div>
+            </div>
+            <div class="box-badge box-badge-success" data-value="active">
+              <div class="box-badge-header">Price per month</div>
+              <div class="box-badge-body" id="costPerMonth">$0</div>
+            </div>
+            <a class="pull-right btn btn-default action-print no-print">Print selection</a>
+            <a class="pull-right btn btn-default action-clear no-print" style="margin-right:4px;">Clear selection</a>
+          </div>
+        </div>
+      </div>
 
-      <section id="main_content">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+      <div class="row filtes-container">
+        <div class="col-lg-12 filters-area">
+        </div>
+      </div>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+      <div id="mainContainer" class="row">
+        <div class="col-lg-12">
+          <table id="hostingsTable" class="table table-bordered table-hover table-condensed table-striped tablesorter">
+            <thead>
+              <tr>
+                <th class="optimal-width no-print"></th>
+                <th class="optimal-width centered"></th>
+                <th class="optimal-width no-print"></th>
+                <th class="optimal-width centered">Provider</th>
+                <th class="centered">Code</th>
+                <th class="optimal-width no-print"></th>
+                <th class="centered">Location</th>
+                <th class="optimal-width centered">OS</th>
+                <th class="optimal-width centered">Price<br/>per hour</th>
+                <th class="optimal-width centered">Price<br/>per day</th>
+                <th class="optimal-width centered">Price<br/>per month</th>
+                <th class="optimal-width centered">Cores</th>
+                <th class="optimal-width centered">RAM<br/>(Gb)</th>
+                <th class="optimal-width centered">HDD<br/>(Gb)</th>
+                <th class="optimal-width centered no-print">HDD<br/>Config</th>
+                <th class="optimal-width centered no-print">Storage<br />Type</th>
+                <th class="optimal-width centered no-print">Network</th>
+                <th class="optimal-width centered no-print">Traffic<br />Included</th>
+              </td>
+            </thead>
+            <tbody id="instancesTable">
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/jagermesh">jagermesh</a> can be found on <a href="https://github.com/jagermesh/cloudhostingcalculator">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
-
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    
   </body>
 </html>
