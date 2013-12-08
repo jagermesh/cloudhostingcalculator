@@ -31,7 +31,7 @@
   <body style="overflow:hidden;">
 
     <script id="filterBadge" type="text/template">
-      <span class="label label-default action-clear-filter" data-field-name="{{fieldName}}" data-value="{{value}}">{{value}} <i class="icon-trash"></i></span>
+      <span class="label label-warning action-clear-filter" data-field-name="{{fieldName}}" data-value="{{value}}">{{value}} <i class="icon-remove"></i></span>
     </script>
 
     <script id="instanceRow" type="text/template">
@@ -39,10 +39,10 @@
         <td class="optimal-width no-print"><a class="btn btn-default btn-xs action-plus"><i class="icon-plus"></i></a></td>
         <td class="optimal-width"><input type="int" class="form-control data-field" name="amount" maxlength="4"/></td>
         <td class="optimal-width no-print"><a class="btn btn-default btn-xs action-minus"><i class="icon-minus"></i></a></td>
-        <td class="optimal-width"><a class="action-filter" data-field-name="provider" data-value="{{provider}}">{{provider}}</a></td>
+        <td class="optimal-width">{{#providerLogo}}<img src="{{providerLogo}}" width="16" /> {{/providerLogo}}<a class="action-filter" data-field-name="provider" data-value="{{provider}}">{{provider}}</a></td>
         <td>{{code}}</td>
-        <td class="optimal-width right-aligned no-print">{{#description}}<a class="not-a tooltip-element" title="{{description}}">&nbsp;<i class="icon-info"></i>&nbsp;</a>{{/description}}</td>
-        <td class="optimal-width"><a class="action-filter" data-field-name="location" data-value="{{location}}">{{location}}</a></td>
+        <td class="optimal-width right-aligned no-print">{{#description}}<a class="not-a tooltip-element" data-content="{{description}}">&nbsp;<i class="icon-info"></i>&nbsp;</a>{{/description}}</td>
+        <td><a class="action-filter" data-field-name="location" data-value="{{location}}">{{location}}</a></td>
         <td class="optimal-width"><a class="action-filter" data-field-name="os" data-value="{{os}}">{{os}}</a></td>
         <td class="optimal-width right-aligned">${{pricePerHour}}</td>
         <td class="optimal-width right-aligned">${{pricePerDay}}</td>
@@ -53,6 +53,7 @@
         <td class="optimal-width right-aligned no-print">{{hddDesc}}</td>
         <td class="optimal-width right-aligned no-print"><a class="action-filter" data-field-name="storageType" data-value="{{storageType}}">{{storageType}}</a></td>
         <td class="optimal-width right-aligned no-print"><a class="action-filter" data-field-name="network" data-value="{{network}}">{{network}}</a></td>
+        <td class="optimal-width right-aligned no-print"><a class="action-filter" data-field-name="traffic" data-value="{{traffic}}">{{traffic}}</a></td>
       </tr>
     </script>
 
@@ -72,6 +73,11 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="nav-item ajax-in-progress invisible"><img width="24" border="0" src="bright/images/progress-small-light.gif" /></li>
+          <li class="nav-item"><a target="_blank" href="http://aws.amazon.com/">Amazon Web Services</a></li>
+          <li class="nav-item"><a target="_blank" href="https://www.digitalocean.com/?refcode=b35024f25717">Digital Ocean</a></li>
+          <li class="nav-item"><a target="_blank" href="http://www.rackspace.com/cloud/">Rackspace Cloud</a></li>
+          <li class="nav-item"><a target="_blank" href="https://cloud.google.com/products/compute-engine/">Google Compute Engine</a></li>
+          <li class="nav-item"><a target="_blank" href="http://www.windowsazure.com/en-us/">Windows Azure</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li class="nav-item"><a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a></li>
@@ -100,6 +106,7 @@
               <div class="box-badge-body" id="costPerMonth">$0</div>
             </div>
             <a class="pull-right btn btn-default action-print no-print">Print selection</a>
+            <a class="pull-right btn btn-default action-clear no-print" style="margin-right:4px;">Clear selection</a>
           </div>
         </div>
       </div>
@@ -115,12 +122,12 @@
             <thead>
               <tr>
                 <th class="optimal-width no-print"></th>
-                <th class="optimal-width centered"><a class="btn btn-default btn-xs action-clear">Clear</a></th>
+                <th class="optimal-width centered"></th>
                 <th class="optimal-width no-print"></th>
                 <th class="optimal-width centered">Provider</th>
                 <th class="centered">Code</th>
                 <th class="optimal-width no-print"></th>
-                <th class="optimal-width centered">Location</th>
+                <th class="centered">Location</th>
                 <th class="optimal-width centered">OS</th>
                 <th class="optimal-width centered">Price<br/>per hour</th>
                 <th class="optimal-width centered">Price<br/>per day</th>
@@ -131,6 +138,7 @@
                 <th class="optimal-width centered no-print">HDD<br/>Config</th>
                 <th class="optimal-width centered no-print">Storage<br />Type</th>
                 <th class="optimal-width centered no-print">Network</th>
+                <th class="optimal-width centered no-print">Traffic<br />Included</th>
               </td>
             </thead>
             <tbody id="instancesTable">

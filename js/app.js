@@ -3,14 +3,21 @@ $(document).ready(function() {
   var instancesDataSource = br.dataSource(br.baseUrl + 'data/instances.json');
   instancesDataSource.on('error', function(operation, error) { br.growlError(error); });
   instancesDataSource.on('calcFields', function(row) {
-    row.pricePerHour  = row.pricePerHour.toFixed(2);
-    row.pricePerDay   = (row.pricePerHour * 24).toFixed(2);
-    row.pricePerMonth = (row.pricePerHour * 720).toFixed(2);
+    row.pricePerHour  = row.pricePerHour.toFixed(3);
+    if (!row.pricePerDay) {
+      row.pricePerDay   = (row.pricePerHour * 24).toFixed(2);
+    }
+    if (!row.pricePerMonth) {
+      row.pricePerMonth = (row.pricePerHour * 720).toFixed(2);
+    }
   });
 
   var instancesDataGrid = br.dataGrid($('#instancesTable'), $('#instanceRow'), instancesDataSource);
   instancesDataGrid.on('change', function() {
-    $('.tooltip-element').tooltip({position: 'bottom'});
+    $('.tooltip-element').each(function() {
+      $(this).popover({placement: 'bottom', trigger: 'hover' });
+    });
+    $('.tooltip-element').popover({placement: 'bottom'});
     br.modified('input.data-field[name=amount]', function() {
       calculateCosts();
     });
@@ -76,7 +83,7 @@ $(document).ready(function() {
       selection[idx++] = amount;
     });
     br.storage.set('selection', selection);
-    cost.perHour = cost.perHour.toFixed(2);
+    cost.perHour = cost.perHour.toFixed(3);
     cost.perDay = cost.perDay.toFixed(2);
     cost.perMonth = cost.perMonth.toFixed(2);
     $('#costPerHour').text('$' + cost.perHour);
@@ -90,6 +97,7 @@ $(document).ready(function() {
     for(var fieldName in filters) {
       $('.filters-area').append(br.fetch($('#filterBadge').html(), { fieldName: fieldName, value: filters[fieldName] }));
     }
+    resize();
   }
 
   function filterData() {
@@ -152,7 +160,7 @@ $(document).ready(function() {
     window.print();
   });
 
-  $('.action-clear').click(function(evt) {
+  $('.action-clear').live('click', function(evt) {
     $('input.data-field[name=amount]').val(0);
     calculateCosts();
     return false;

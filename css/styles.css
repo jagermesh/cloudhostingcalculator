@@ -75,6 +75,10 @@ div.box-badge-warning div.box-badge-body {
   display: none;
 }
 
+.action-clear-filter {
+  font-size: 12pt;
+}
+
 @media print {
   .filtered-out {
     display: table-row;
