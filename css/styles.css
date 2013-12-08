@@ -1,0 +1,94 @@
+div.box-badge {
+  margin-right: 6px;
+  margin-bottom: 6px;
+  width: 160px;
+  text-align: center;
+  display: inline-block;
+}
+div.box-badge-header {
+  border: 1px solid #AAA;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background-color: white;
+  color: black;
+  font-size: 14pt;
+  vertical-align: middle;
+  overflow: hidden;
+  padding: 2px;
+  height: 32px;
+}
+div.box-badge-body {
+  vertical-align: middle;
+  font-size: 14pt;
+  font-weight: bold;
+  height: 32px;
+  padding-top: 2px;
+  border-bottom: 1px solid #AAA;
+  border-left: 1px solid #AAA;
+  border-right: 1px solid #AAA;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+div.box-badge-default div.box-badge-body {
+  background-color: #EFEFEF;
+  color: black;
+}
+div.box-badge-success div.box-badge-body {
+  background-color: #5cb85c;
+  color: white;
+}
+div.box-badge-warning div.box-badge-body {
+  background-color: #Fc3;
+  color: white;
+}
+
+.data-field[name="amount"] {
+  height:24px;
+  width:50px;
+  text-align: center;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.container-box {
+  margin-top: 60px;
+}
+
+#mainContainer {
+  overflow-y:auto;
+}
+
+.filters-area {
+  margin-bottom: 6px;
+}
+
+.action-filter {
+  cursor: pointer;
+}
+
+.action-clear-filter {
+  cursor: pointer;
+}
+
+.filtered-out {
+  display: none;
+}
+
+@media print {
+  .filtered-out {
+    display: table-row;
+  }
+  .no-print {
+    display:none;
+  }
+  .container-box {
+    margin-top: 0px;
+  }
+  .badges-container {
+    text-align: center;
+  }
+  .filtes-container {
+    display: none;
+  }
+}

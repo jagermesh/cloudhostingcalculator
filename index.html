@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cloud Hosting Calculator</title>
+    <meta name="description" content="Cloud Hosting Calculator. Amazon EC2, DigitalOcean, RackSpace, etc...">
+    <meta name="author" content="jagermesh">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="bright/3rdparty/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bright/3rdparty/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="/bright/3rdparty/font-awesome/css/font-awesome-ie7.min.css">
+    <![endif]-->
+    <link href="bright/css/bright.css" rel="stylesheet">
+    <script src="bright/3rdparty/jquery/jquery-1.7.1.min.js"></script>
+    <script src="bright/3rdparty/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="bright/3rdparty/mustache/mustache.min.js"></script>
+    <script src="bright/js/bright.min.js"></script>
+
+    <link href="3rdparty/tablesorter/theme.bootstrap-custom.css" rel="stylesheet">
+    <script src="3rdparty/tablesorter/jquery.tablesorter.min.js"></script>
+    <script src="3rdparty/tablesorter/jquery.tablesorter.widgets.js"></script>
+
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/app.js"></script>
+  </head>
+
+  <body style="overflow:hidden;">
+
+    <script id="filterBadge" type="text/template">
+      <span class="label label-default action-clear-filter" data-field-name="{{fieldName}}" data-value="{{value}}">{{value}} <i class="icon-trash"></i></span>
+    </script>
+
+    <script id="instanceRow" type="text/template">
+      <tr class="data-row no-print" data-rowd="{{code}}">
+        <td class="optimal-width no-print"><a class="btn btn-default btn-xs action-plus"><i class="icon-plus"></i></a></td>
+        <td class="optimal-width"><input type="int" class="form-control data-field" name="amount" maxlength="4"/></td>
+        <td class="optimal-width no-print"><a class="btn btn-default btn-xs action-minus"><i class="icon-minus"></i></a></td>
+        <td class="optimal-width"><a class="action-filter" data-field-name="provider" data-value="{{provider}}">{{provider}}</a></td>
+        <td>{{code}}</td>
+        <td class="optimal-width right-aligned no-print">{{#description}}<a class="not-a tooltip-element" title="{{description}}">&nbsp;<i class="icon-info"></i>&nbsp;</a>{{/description}}</td>
+        <td class="optimal-width"><a class="action-filter" data-field-name="location" data-value="{{location}}">{{location}}</a></td>
+        <td class="optimal-width"><a class="action-filter" data-field-name="os" data-value="{{os}}">{{os}}</a></td>
+        <td class="optimal-width right-aligned">${{pricePerHour}}</td>
+        <td class="optimal-width right-aligned">${{pricePerDay}}</td>
+        <td class="optimal-width right-aligned">${{pricePerMonth}}</td>
+        <td class="optimal-width right-aligned">{{cores}}</td>
+        <td class="optimal-width right-aligned">{{ram}}</td>
+        <td class="optimal-width right-aligned">{{hdd}}</td>
+        <td class="optimal-width right-aligned no-print">{{hddDesc}}</td>
+        <td class="optimal-width right-aligned no-print"><a class="action-filter" data-field-name="storageType" data-value="{{storageType}}">{{storageType}}</a></td>
+        <td class="optimal-width right-aligned no-print"><a class="action-filter" data-field-name="network" data-value="{{network}}">{{network}}</a></td>
+      </tr>
+    </script>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse1 no-print" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{/}">Cloud Hosting Calculator</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="nav-item ajax-in-progress invisible"><img width="24" border="0" src="bright/images/progress-small-light.gif" /></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-item"><a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container container-box">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="badges-container">
+            <div class="box-badge box-badge-default action-change-tasks-scope" data-value="active">
+              <div class="box-badge-header">Instances</div>
+              <div class="box-badge-body" id="amountOfInstances">0</div>
+            </div>
+            <div class="box-badge box-badge-default action-change-tasks-scope" data-value="active">
+              <div class="box-badge-header">Price per hour</div>
+              <div class="box-badge-body" id="costPerHour">$0</div>
+            </div>
+            <div class="box-badge box-badge-warning action-change-tasks-scope" data-value="active">
+              <div class="box-badge-header">Price per day</div>
+              <div class="box-badge-body" id="costPerDay">$0</div>
+            </div>
+            <div class="box-badge box-badge-success" data-value="active">
+              <div class="box-badge-header">Price per month</div>
+              <div class="box-badge-body" id="costPerMonth">$0</div>
+            </div>
+            <a class="pull-right btn btn-default action-print no-print">Print selection</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row filtes-container">
+        <div class="col-lg-12 filters-area">
+        </div>
+      </div>
+
+      <div id="mainContainer" class="row">
+        <div class="col-lg-12">
+          <table id="hostingsTable" class="table table-bordered table-hover table-condensed table-striped tablesorter">
+            <thead>
+              <tr>
+                <th class="optimal-width no-print"></th>
+                <th class="optimal-width centered"><a class="btn btn-default btn-xs action-clear">Clear</a></th>
+                <th class="optimal-width no-print"></th>
+                <th class="optimal-width centered">Provider</th>
+                <th class="centered">Code</th>
+                <th class="optimal-width no-print"></th>
+                <th class="optimal-width centered">Location</th>
+                <th class="optimal-width centered">OS</th>
+                <th class="optimal-width centered">Price<br/>per hour</th>
+                <th class="optimal-width centered">Price<br/>per day</th>
+                <th class="optimal-width centered">Price<br/>per month</th>
+                <th class="optimal-width centered">Cores</th>
+                <th class="optimal-width centered">RAM<br/>(Gb)</th>
+                <th class="optimal-width centered">HDD<br/>(Gb)</th>
+                <th class="optimal-width centered no-print">HDD<br/>Config</th>
+                <th class="optimal-width centered no-print">Storage<br />Type</th>
+                <th class="optimal-width centered no-print">Network</th>
+              </td>
+            </thead>
+            <tbody id="instancesTable">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
