@@ -3,12 +3,21 @@ $(document).ready(function() {
   var instancesDataSource = br.dataSource(br.baseUrl + 'data/instances.json');
   instancesDataSource.on('error', function(operation, error) { br.growlError(error); });
   instancesDataSource.on('calcFields', function(row) {
-    row.pricePerHour  = row.pricePerHour.toFixed(3);
+    if (row.pricePerHour) {
+      row.pricePerHour  = row.pricePerHour.toFixed(3);
+    } else
+    if (row.pricePerMonth) {
+      row.pricePerHour = (row.pricePerMonth / 720).toFixed(2);
+    }
     if (!row.pricePerDay) {
       row.pricePerDay   = (row.pricePerHour * 24).toFixed(2);
+    } else {
+      row.pricePerDay = row.pricePerDay.toFixed(2);
     }
     if (!row.pricePerMonth) {
       row.pricePerMonth = (row.pricePerHour * 720).toFixed(2);
+    } else {
+      row.pricePerMonth = row.pricePerMonth.toFixed(2);
     }
   });
 

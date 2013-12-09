@@ -134,4 +134,13 @@
 , { "provider": "RackSpace", "code": "inf-perf2-3", "location": "", "os": "Windows", "pricePerHour": 3.20, "pricePerMonth": 2336.00, "cores": 16, "ecu": null, "ram":  60, "hdd":  640, "hddDesc": "2x300", "storageType": "SSD", "network":  "5,000Mb/s" }
 , { "provider": "RackSpace", "code": "inf-perf2-4", "location": "", "os": "Windows", "pricePerHour": 4.80, "pricePerMonth": 3504.00, "cores": 24, "ecu": null, "ram":  90, "hdd":  940, "hddDesc": "3x300", "storageType": "SSD", "network":  "7,500Mb/s" }
 , { "provider": "RackSpace", "code": "inf-perf2-5", "location": "", "os": "Windows", "pricePerHour": 6.40, "pricePerMonth": 4672.00, "cores": 32, "ecu": null, "ram": 120, "hdd": 1240, "hddDesc": "4x300", "storageType": "SSD", "network": "10,000Mb/s" }
+
+, { "provider": "Linode", "code": "1gb",  "location": "Worldwide", "os": "Linux", "pricePerHour": null, "pricePerMonth":   20.00, "cores":   1, "ecu": null, "ram":   1, "hdd":   48, "hddDesc": "",      "storageType": "SSD", "traffic":   "2TB" }
+, { "provider": "Linode", "code": "2gb",  "location": "Worldwide", "os": "Linux", "pricePerHour": null, "pricePerMonth":   40.00, "cores":   2, "ecu": null, "ram":   2, "hdd":   96, "hddDesc": "",      "storageType": "SSD", "traffic":   "4TB" }
+, { "provider": "Linode", "code": "4gb",  "location": "Worldwide", "os": "Linux", "pricePerHour": null, "pricePerMonth":   80.00, "cores":   4, "ecu": null, "ram":   4, "hdd":  192, "hddDesc": "",      "storageType": "SSD", "traffic":   "8TB" }
+, { "provider": "Linode", "code": "8gb",  "location": "Worldwide", "os": "Linux", "pricePerHour": null, "pricePerMonth":  160.00, "cores":   8, "ecu": null, "ram":   8, "hdd":  384, "hddDesc": "",      "storageType": "SSD", "traffic":  "16TB" }
+, { "provider": "Linode", "code": "16gb", "location": "Worldwide", "os": "Linux", "pricePerHour": null, "pricePerMonth":  320.00, "cores":  16, "ecu": null, "ram":  16, "hdd":  768, "hddDesc": "",      "storageType": "SSD", "traffic":  "20TB" }
+, { "provider": "Linode", "code": "24gb", "location": "Worldwide", "os": "Linux", "pricePerHour": null, "pricePerMonth":  480.00, "cores":  16, "ecu": null, "ram":  24, "hdd": 1152, "hddDesc": "",      "storageType": "SSD", "traffic":  "20TB" }
+, { "provider": "Linode", "code": "32gb", "location": "Worldwide", "os": "Linux", "pricePerHour": null, "pricePerMonth":  640.00, "cores":  16, "ecu": null, "ram":  32, "hdd": 1536, "hddDesc": "",      "storageType": "SSD", "traffic":  "20TB" }
+, { "provider": "Linode", "code": "40gb", "location": "Worldwide", "os": "Linux", "pricePerHour": null, "pricePerMonth":  800.00, "cores":  16, "ecu": null, "ram":  40, "hdd": 1920, "hddDesc": "",      "storageType": "SSD", "traffic":  "20TB" }
 ]
