@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cloud Hosting Calculator</title>
+    <meta name="description" content="Cloud Hosting Calculator. Amazon EC2, DigitalOcean, RackSpace, etc...">
+    <meta name="author" content="jagermesh">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="bright/3rdparty/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bright/3rdparty/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="/bright/3rdparty/font-awesome/css/font-awesome-ie7.min.css">
+    <![endif]-->
+    <link href="bright/css/bright.css" rel="stylesheet">
+    <script src="bright/3rdparty/jquery/jquery-1.7.1.min.js"></script>
+    <script src="bright/3rdparty/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="bright/3rdparty/mustache/mustache.min.js"></script>
+    <script src="bright/js/bright.min.js"></script>
+
+    <link href="3rdparty/tablesorter/theme.bootstrap-custom.css" rel="stylesheet">
+    <script src="3rdparty/tablesorter/jquery.tablesorter.min.js"></script>
+    <script src="3rdparty/tablesorter/jquery.tablesorter.widgets.js"></script>
+
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/app.js"></script>
+  </head>
+
+  <body style="overflow:hidden;">
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse1 no-print" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{/}">Cloud Hosting Calculator</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="nav-item ajax-in-progress invisible"><img width="24" border="0" src="bright/images/progress-small-light.gif" /></li>
+          <li class="nav-item"><a href="index.html">Home</a></li>
+          <li class="nav-item active"><a href="providers.html">Providers</a></li>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <a target="_blank" class="btn btn-default" href="https://github.com/jagermesh/cloudhostingcalculator">Fork me on GitHub</a>
+        </form>
+      </div>
+    </nav>
+
+    <div class="container container-box">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2><a target="_blank" href="http://aws.amazon.com/">AWS</a></h2>
+          <h2><a target="_blank" href="https://www.digitalocean.com/?refcode=b35024f25717">Digital Ocean</a> <small>for those who care - url contain my referral code</small></h2>
+          <h2><a target="_blank" href="http://www.rackspace.com/cloud/">RackSpace</a></h2>
+          <h2><a target="_blank" href="https://cloud.google.com/products/compute-engine/">Google</a></h2>
+          <h2><a target="_blank" href="http://www.windowsazure.com/en-us/">Microsoft</a></h2>
+          <h2><a target="_blank" href="https://www.linode.com/">Linode</a></h2>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-29228272-3', 'jagermesh.github.io');
+      ga('send', 'pageview');
+
+    </script>
+
+  </body>
+</html>
