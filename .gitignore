@@ -1,0 +1,7 @@
+.svn
+.DS_Store
+_logs
+_tmp
+bright
+composer.lock
+vendor

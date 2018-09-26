@@ -136,7 +136,7 @@ $(document).ready(function() {
     }
   }
 
-  $('.action-plus').live('click', function() {
+  $(document).on('click', '.action-plus', function() {
     var input = $(this).closest('tr').find('input.data-field[name=amount]');
     var amount = input.val();
     if (br.isEmpty(amount)) {
@@ -149,7 +149,7 @@ $(document).ready(function() {
     calculateCosts();
   });
 
-  $('.action-minus').live('click', function() {
+  $(document).on('click', '.action-minus', function() {
     var input = $(this).closest('tr').find('input.data-field[name=amount]');
     var amount = input.val();
     if (br.isEmpty(amount)) {
@@ -169,13 +169,13 @@ $(document).ready(function() {
     window.print();
   });
 
-  $('.action-clear').live('click', function(evt) {
+  $('.action-clear').on('click', function(evt) {
     $('input.data-field[name=amount]').val(0);
     calculateCosts();
     return false;
   });
 
-  $('.action-filter').live('click', function(evt) {
+  $('.action-filter').on('click', function(evt) {
     var fieldName = $(this).attr('data-field-name');
     filters[fieldName] = $(this).attr('data-value');
     br.storage.set('filters', filters);
@@ -183,7 +183,7 @@ $(document).ready(function() {
     filterData();
   });
 
-  $('.action-clear-filter').live('click', function() {
+  $('.action-clear-filter').on('click', function() {
     var fieldName = $(this).attr('data-field-name');
     var newFilters = {};
     for(var i in filters) {
